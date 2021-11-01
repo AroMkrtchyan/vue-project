@@ -23,7 +23,6 @@
     </div>
 </template>
 
-
 <style scoped>
     .Header-container {
         background: #B0E0E6;
