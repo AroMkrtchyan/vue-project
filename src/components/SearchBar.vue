@@ -1,11 +1,11 @@
 <template>
   <div class="search-bar">
     <div class="buttonWrapper">
-      <CustomButton text="Add new card" color="#ffcccc" @buttonClick="buttonClick"/>
+      <CustomButton text="Add new card" color="#ffcccc" @buttonClick="AddButtonClick"/>
     </div>
     <div class="searchInputWrapper">
-      <input type="text" placeholder="search" class="searchInput">
-      <CustomButton text="SEARCH" />
+      <input type="text" placeholder="search" class="searchInput" v-model="searchInput"/>
+      <CustomButton text="SEARCH" @buttonClick="searchButtonClick"/>
     </div>
   </div>
 </template>
@@ -13,10 +13,18 @@
 <script>
 import CustomButton from "./CustomButton";
 export default {
+  data() {
+    return {
+      searchInput:'',
+    }
+  },
   components: {CustomButton},
   methods: {
-    buttonClick() {
-      this.$emit('buttonClick')
+    AddButtonClick() {
+      this.$emit('AddButtonClick')
+    },
+    searchButtonClick() {
+      this.$emit('searchButtonClick', this.searchInput)
     }
   }
 }

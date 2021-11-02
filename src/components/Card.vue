@@ -40,18 +40,22 @@ export default {
     date: {
       type: String,
       required: true,
+    },
+    itemId: {
+      type: Number,
+      required: true,
     }
   },
   methods: {
     emitFunc(val) {
       console.log('edit', val)
-      // this.$emit('listenEvent', val)
+      // this.$emit('listenEvent', this.itemId)
     },
     editCard() {
-      console.log('edit card')
+      this.$emit('editCard', this.itemId)
     },
     deleteCard() {
-      console.log('delete Card')
+      this.$emit('deleteCard', this.itemId)
     }
 
   },
@@ -76,6 +80,7 @@ export default {
 }
 .cardImg {
   width: 100%;
+  height: 130px;
   margin-bottom: 15px;
   box-shadow: 0 0 8px 1px rgba(0,0,0,0.89);
 }

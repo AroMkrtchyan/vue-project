@@ -8,9 +8,14 @@
       <textarea cols="50" rows="10" name="description" required
                 placeholder="card description"
                 v-model="cardDescription"></textarea>
+      <h3>Image</h3>
+      <input type="file" @change="handleImage" accept="image/*">
       <h5>Date</h5>
       <input type="date" v-model="cardDate" required>
       <CustomButton text="Create New Card" @buttonClick="formSubmit"/>
+      <button @click="editCard">
+        edit
+      </button>
       <span class="close-button" @click="formCloser">X</span>
     </form>
 
@@ -24,7 +29,17 @@ export default {
     return {
       cardTitle:'',
       cardDescription:'',
-      cardDate: ''
+      cardDate: '',
+      image: '',
+    }
+  },
+  props: {
+    data: {
+      type: Array,
+      required: false,
+    },
+    editCard: {
+      type: Function
     }
   },
   components: {CustomButton},
@@ -33,10 +48,21 @@ export default {
       this.$emit('formCloser')
     },
     formSubmit() {
-      this.$emit('formSubmit', this.cardTitle, this.cardDescription,this.cardDate)
-      console.log(this.cardTitle,this.cardDescription,this.cardDate)
+      if (this.cardTitle && this.cardDescription && this.cardDate && this.image) {
+        this.$emit('formSubmit', this.cardTitle, this.cardDescription,this.cardDate, this.image)
+      }
+    },
+    handleImage(e){
+      const selectedImage = e.target.files[0]
+      this.createBase64Image(selectedImage)
+    },
+    createBase64Image(fileObject) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.image = e.target.result
+      }
+      reader.readAsBinaryString(fileObject)
     }
-
   }
 }
 </script>
