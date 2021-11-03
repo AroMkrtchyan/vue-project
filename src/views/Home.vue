@@ -14,7 +14,6 @@
       />
       <h1 v-if="filteredData.length === 0" class="message">No Cards</h1>
     </div>
-
   </div>
 </template>
 
@@ -61,7 +60,6 @@ export default {
       this.cardData.cardDate = selectedItem[0].date
       this.cardData.imageLink = selectedItem[0].imageLink
       this.openWindow()
-      console.log(itemId,selectedItem, this.cardData)
     },
     deleteCard(itemId) {
       this.cards = this.cards.filter(card => card.id !== itemId)
@@ -89,16 +87,13 @@ export default {
           }
         })
         this.openWindow()
-        console.log(this.cardData.id)
       }
-
     },
     searchButtonClick(searchInput){
       this.searchInput = searchInput
     },
     handleImage(e){
       const selectedImage = e.target.files[0]
-      console.log(e.target.files[0])
       this.createBase64Image(selectedImage)
     },
     createBase64Image(fileObject) {
@@ -139,6 +134,5 @@ export default {
   background: #a8a8a8;
   padding: 10px;
   border-radius: 20px;
-
 }
 </style>

@@ -18,7 +18,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -47,21 +46,14 @@ export default {
     }
   },
   methods: {
-    emitFunc(val) {
-      console.log('edit', val)
-      // this.$emit('listenEvent', this.itemId)
-    },
     editCard() {
       this.$emit('editCard', this.itemId)
     },
     deleteCard() {
       this.$emit('deleteCard', this.itemId)
     }
-
   },
-
   components: {CustomButton}
-
 }
 </script>
 
@@ -111,5 +103,4 @@ export default {
   align-items: center;
   font-weight: bold;
 }
-
 </style>

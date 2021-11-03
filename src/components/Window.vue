@@ -15,21 +15,12 @@
       <CustomButton text="Create New Card" @buttonClick="formSubmit"/>
       <span class="close-button" @click="formCloser">X</span>
     </form>
-
   </div>
 </template>
 
 <script>
 import CustomButton from "./CustomButton";
 export default {
-  data(){
-    return {
-      // cardTitle:'',
-      // cardDescription:'',
-      // cardDate: '',
-      // image: '',
-    }
-  },
   props: {
     data: {
       type: Array,
@@ -49,7 +40,6 @@ export default {
     },
     formSubmit() {
       this.$emit('formSubmit')
-      console.log(this.cardData)
     },
     handleImage(e){
       this.$emit('handleImage', e)
@@ -111,5 +101,4 @@ h1, h3, h5 {
   justify-content: center;
   align-items: center;
 }
-
 </style>
