@@ -2,7 +2,8 @@
   <div class="home">
     <div class="search-bar">
       <SearchBar @AddButtonClick="openWindow" @searchButtonClick="searchButtonClick"/>
-      <Window v-if="window" @openWindow="openWindow" :data="this.cards" :editCard="editCard"
+      <Window v-if="window" @openWindow="openWindow" :data="this.cards"
+              :editCard="editCard" :cardData="this.cardData" @handleImage="handleImage"
               @formCloser="openWindow" @formSubmit="formSubmit"/>
     </div>
     <div class="home-content">
@@ -24,22 +25,28 @@ import Window from "../components/Window"
 export default {
   data() {
     return {
+      cardData: {
+        cardTitle:'',
+        cardDescription:'',
+        cardDate: '',
+        imageLink: '',
+      },
       cards:[
         {id:1,
          title: 'hello title',
          description: 'hello description',
          imageLink: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTExtoLVhMIfPRj_8d5RQKF2qjwUbuYL2tZTg&usqp=CAU',
-         date: '20.15'},
+         date: '0011-11-11'},
         {id:2,
          title: 'hello title',
          description: 'hello description',
          imageLink: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYIX4fdymadei7FiL-19pxFAWPLEJgQlNEww&usqp=CAU',
-         date: '20.15'},
+         date: '0011-11-11'},
         {id:3,
          title: 'hello title',
          description: 'hello description',
          imageLink: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUljqj4bvR3hqD9XeBTjEeNubLiwtjlkJS3A&usqp=CAU',
-         date: '2021-20-15'},
+         date: '0011-11-11'},
       ],
       window: false,
       searchInput: ''
@@ -47,8 +54,14 @@ export default {
   },
   methods: {
     editCard(itemId) {
+      const selectedItem = this.cards.filter(card => card.id === itemId)
+      this.cardData.id = selectedItem[0].id
+      this.cardData.cardTitle = selectedItem[0].title
+      this.cardData.cardDescription = selectedItem[0].description
+      this.cardData.cardDate = selectedItem[0].date
+      this.cardData.imageLink = selectedItem[0].imageLink
       this.openWindow()
-      console.log(itemId,)
+      console.log(itemId,selectedItem, this.cardData)
     },
     deleteCard(itemId) {
       this.cards = this.cards.filter(card => card.id !== itemId)
@@ -56,18 +69,44 @@ export default {
     openWindow(){
       this.window = !this.window
     },
-    formSubmit(title, description, date, imageLink){
-      this.cards.push({
-        id: new Date().getTime(),
-        title,
-        description,
-        date,
-        imageLink,
-      })
-      this.openWindow()
+    formSubmit(){
+      if(!this.cardData.id){
+        this.cards.push({
+          id: new Date().getTime(),
+          title: this.cardData.cardTitle,
+          description: this.cardData.cardDescription,
+          date: this.cardData.cardDate,
+          imageLink: this.cardData.imageLink,
+        })
+        this.openWindow()
+      }else{
+        this.cards.forEach(card => {
+          if(card.id === this.cardData.id){
+            card.title=this.cardData.cardTitle
+            card.description=this.cardData.cardDescription
+            card.imageLink=this.cardData.imageLink
+            card.date=this.cardData.cardDate
+          }
+        })
+        this.openWindow()
+        console.log(this.cardData.id)
+      }
+
     },
     searchButtonClick(searchInput){
       this.searchInput = searchInput
+    },
+    handleImage(e){
+      const selectedImage = e.target.files[0]
+      console.log(e.target.files[0])
+      this.createBase64Image(selectedImage)
+    },
+    createBase64Image(fileObject) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.cardData.imageLink = e.target.result
+      }
+      reader.readAsBinaryString(fileObject)
     }
   },
   computed:{

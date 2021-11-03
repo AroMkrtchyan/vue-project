@@ -3,19 +3,16 @@
     <form class="window" @submit.prevent>
       <h1>Card Title</h1>
       <input type="text" name="title" placeholder="card title" required
-             v-model="cardTitle" >
+             v-model="cardData.cardTitle" >
       <h3>Card Description</h3>
       <textarea cols="50" rows="10" name="description" required
                 placeholder="card description"
-                v-model="cardDescription"></textarea>
+                v-model="cardData.cardDescription"></textarea>
       <h3>Image</h3>
       <input type="file" @change="handleImage" accept="image/*">
       <h5>Date</h5>
-      <input type="date" v-model="cardDate" required>
+      <input type="date" v-model="cardData.cardDate" required>
       <CustomButton text="Create New Card" @buttonClick="formSubmit"/>
-      <button @click="editCard">
-        edit
-      </button>
       <span class="close-button" @click="formCloser">X</span>
     </form>
 
@@ -27,16 +24,19 @@ import CustomButton from "./CustomButton";
 export default {
   data(){
     return {
-      cardTitle:'',
-      cardDescription:'',
-      cardDate: '',
-      image: '',
+      // cardTitle:'',
+      // cardDescription:'',
+      // cardDate: '',
+      // image: '',
     }
   },
   props: {
     data: {
       type: Array,
       required: false,
+    },
+    cardData: {
+      type: Object
     },
     editCard: {
       type: Function
@@ -48,21 +48,12 @@ export default {
       this.$emit('formCloser')
     },
     formSubmit() {
-      if (this.cardTitle && this.cardDescription && this.cardDate && this.image) {
-        this.$emit('formSubmit', this.cardTitle, this.cardDescription,this.cardDate, this.image)
-      }
+      this.$emit('formSubmit')
+      console.log(this.cardData)
     },
     handleImage(e){
-      const selectedImage = e.target.files[0]
-      this.createBase64Image(selectedImage)
+      this.$emit('handleImage', e)
     },
-    createBase64Image(fileObject) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.image = e.target.result
-      }
-      reader.readAsBinaryString(fileObject)
-    }
   }
 }
 </script>
