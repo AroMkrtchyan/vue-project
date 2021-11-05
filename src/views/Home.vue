@@ -66,6 +66,16 @@ export default {
     },
     openWindow(){
       this.window = !this.window
+      if (!this.window){
+        this.cardData = {
+          id: '',
+          cardTitle:'',
+          cardDescription:'',
+          cardDate: '',
+          imageLink: '',
+        }
+      }
+
     },
     formSubmit(){
       if(!this.cardData.id){
@@ -98,10 +108,25 @@ export default {
     },
     createBase64Image(fileObject) {
       const reader = new FileReader();
-      reader.onload = (e) => {
-        this.cardData.imageLink = e.target.result
+      reader.onloadend = () => {
+        this.cardData.imageLink = reader.result
       }
-      reader.readAsBinaryString(fileObject)
+      reader.readAsDataURL(fileObject);
+    }
+  },
+  created() {
+    if (localStorage.cards){
+      this.cards = JSON.parse(localStorage.getItem('cards'))
+    }else{
+      localStorage.cards = JSON.stringify(this.cards)
+    }
+  },
+  watch: {
+    cards: {
+      handler(val) {
+        localStorage.setItem('cards', JSON.stringify(this.cards))
+      },
+      deep:true
     }
   },
   computed:{

@@ -52,6 +52,20 @@ export default {
 }
 .searchInputWrapper {
   display: flex;
-
+}
+@media (max-width: 600px) {
+  .search-bar {
+    flex-direction: column-reverse;
+  }
+  .searchInputWrapper {
+    margin-bottom: 10px;
+    justify-content: space-between;
+  }
+  .searchInput {
+    width: 87%;
+  }
+  .searchInputWrapper > button {
+    font-size: 12px;
+  }
 }
 </style>
